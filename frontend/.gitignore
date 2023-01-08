@@ -17,8 +17,9 @@
 
 # misc
 .DS_Store
-./__MACOSX/
 *.pem
+./.idea/
+./__MACOSX/
 
 # debug
 npm-debug.log*

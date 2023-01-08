@@ -59,7 +59,7 @@ const StyledToastMessage = styled.p`
 
 const Toast = ({ message, type }) => {
   return (
-    <StyledToast type={type}>
+    <StyledToast data-testid={"toast-1"} type={type}>
       {type === "success" ? <Checkmark /> : <Error />}
       <StyledToastTitle>
         {type === "success" ? "Success!" : "Error!"}
