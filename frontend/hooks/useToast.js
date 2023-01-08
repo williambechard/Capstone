@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { ToastContext } from "../providers";
+import { useContext } from 'react';
+import { ToastContext } from '../providers';
 
 const returnUpdatedToasts = (currentToasts, index, newToast) => {
   const newToasts = [...currentToasts];
@@ -10,23 +10,23 @@ const returnUpdatedToasts = (currentToasts, index, newToast) => {
 const useToast = () => {
   const { toasts, setToasts } = useContext(ToastContext);
 
-  const removeToast = (id) => {
+  const removeToast = id => {
     if (id === null) setToasts([]);
-    else setToasts((previous) => previous.filter((item) => item.id !== id));
+    else setToasts(previous => previous.filter(item => item.id !== id));
   };
 
-  const addToast = (incomingToast) => {
+  const addToast = incomingToast => {
     if (!incomingToast) return;
 
     const {
       id = Date.now(),
       duration = 3000,
-      persist = false,
+      persist = false
     } = incomingToast || {};
     const newToast = { ...incomingToast, id, duration, persist };
 
-    setToasts((previous) => {
-      const existing = previous.findIndex((item) => item.id === id);
+    setToasts(previous => {
+      const existing = previous.findIndex(item => item.id === id);
 
       return existing === -1
         ? [...previous, newToast]
@@ -35,7 +35,7 @@ const useToast = () => {
 
     if (!newToast.persist)
       setTimeout(
-        (removeId) => {
+        removeId => {
           removeToast(removeId);
         },
         newToast.duration,

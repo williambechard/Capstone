@@ -1,29 +1,43 @@
-import styled from "@emotion/styled";
+import React from 'react';
+import styled from '@emotion/styled';
+import colors from '../../theme/colors';
 
-const StyledSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1 1 auto;
-  padding: 3rem 1rem;
-  background: #dfdfdf;
-  margin: 0;
+/**
+ * Style component based on a div element
+ */
+const StyledPage = styled.section`
+  ${props =>
+    `
+      background-color:${props.bgColor};
+      grid-template-rows:${props.templateRows};
+      border-radius:${props.borderRadius};
+      height:${props.height};
+      margin:${props.margin};
+      width:${props.width};
+  `}
+  display: grid;
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1240px;
-  margin: 0;
-  gap: 1rem;
-`;
-
-const Section = ({ children }) => {
+const Section = ({
+  bgColor = colors.mono[0],
+  templateRows = 'auto 1fr auto',
+  borderRadius = '0',
+  height = '100vh',
+  margin = '0',
+  width = 'auto',
+  children
+}) => {
   return (
-    <StyledSection>
-      <Container>{children}</Container>
-    </StyledSection>
+    <StyledPage
+      templateRows={templateRows}
+      height={height}
+      borderRadius={borderRadius}
+      bgColor={bgColor}
+      margin={margin}
+      width={width}
+    >
+      {children}
+    </StyledPage>
   );
 };
 
