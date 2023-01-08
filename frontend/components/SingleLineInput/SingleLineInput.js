@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import Text from '../Text/Text';
 import colors from '../../theme/colors';
@@ -20,7 +20,7 @@ const StyledInput = styled.input`
 `};
 `;
 
-const StyledAlert = styled.span`
+const StyledAlert = styled.div`
   color: ${colors.bright[1]};
   font-family: Poppins;
 `;
@@ -30,7 +30,7 @@ const StyledAlert = styled.span`
  * Styling for label part of the input
  */
 const StyledDiv = styled.div`
-  margin-bottom: 20px;
+  ${props => `width: ${props.width};`};
 `;
 
 const SingleLineInput = ({
@@ -38,12 +38,21 @@ const SingleLineInput = ({
   name = 'test',
   errors,
   register,
-  width = '100%'
+  width = '100%',
+  bgColor = 'white',
+  value = ''
 }) => {
+  const [input, setInput] = useState('');
+
+  useMemo(() => {
+    setInput(value);
+  }, []);
+
   return (
-    <StyledDiv>
-      <label htmlFor={name}>
+    <StyledDiv bgColor={bgColor} width={width}>
+      <label style={{ display: 'block' }} htmlFor={name}>
         <Text
+          bgColor={bgColor}
           fontWeight={'1000'}
           fontSize={'1'}
           fColor={
@@ -52,7 +61,7 @@ const SingleLineInput = ({
               : colors.mono[colors.mono.length - 1]
           }
         >
-          <span>{labelText}</span>
+          {labelText}
         </Text>
       </label>
       <StyledInput
@@ -60,13 +69,15 @@ const SingleLineInput = ({
         name={name}
         title={name}
         id={name}
-        width={width}
+        width={'100%'}
         aria-invalid={errors?.[name] ? 'true' : 'false'}
         {...register(name, {
           required: 'Required',
           minLength: 1,
           maxLength: 110
         })}
+        value={input}
+        onChange={e => setInput(e.target.value)}
       />
       {errors?.[name] && errors?.[name].type === 'required' && (
         <StyledAlert role={'alert'}>Input is Required</StyledAlert>

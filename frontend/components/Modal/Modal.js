@@ -10,7 +10,7 @@ import colors from '../../theme/colors';
  */
 const StyledBG = styled.div`
   position: fixed;
-  z-index: 3;
+  z-index: 13;
   left: 0;
   top: 0;
   width: 100%;
@@ -29,10 +29,10 @@ const StyledModal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
+  width: 800px;
   max-width: 100%;
   max-height: 100%;
-  z-index: 4;
+  z-index: 14;
   background-color: white;
   border-radius: 15px;
 `;

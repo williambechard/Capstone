@@ -12,7 +12,7 @@
     "build": "babel --extensions .js,.jsx ./src -d dist",
     "start": "npm run build && node dist/index.js",
     "dev": "next dev",
-    "test": "jest",
+    "test": "jest --detectOpenHandles --forceExit ",
     "coverage": "jest --coverage",
     "lint": "eslint",
     "preview": "jest-preview"
@@ -28,7 +28,8 @@
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.39.6"
+    "react-hook-form": "^7.39.6",
+    "react-table": "^7.8.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",

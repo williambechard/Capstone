@@ -25,7 +25,6 @@ const TextItem = styled.div`
   ${props =>
     props.clickable &&
     `
-    text-decoration:underline dotted;
     cursor: pointer;
      &:hover {
         text-decoration:underline;
@@ -36,35 +35,41 @@ const TextItem = styled.div`
   text-align: left;
   font-family: Poppins, serif;
 `;
-const Text = ({
-  display = 'inline-block',
-  fontSize = '1',
-  bgColor = colors.mono[0],
-  fColor = colors.mono[colors.mono.length - 1],
-  fontWeight = '400',
-  margin = '0',
-  overflow = 'hidden',
-  maxHeight = '40vh',
-  clickable = false,
-  children,
-  onClick
-}) => {
-  return (
-    <TextItem
-      display={display}
-      fontSize={fontSize}
-      bgColor={bgColor}
-      fColor={fColor}
-      fontWeight={fontWeight}
-      margin={margin}
-      overflow={overflow}
-      maxHeight={maxHeight}
-      clickable={clickable}
-      onClick={onClick}
-    >
-      {children}
-    </TextItem>
-  );
-};
+
+const Text = React.forwardRef(
+  (
+    {
+      display = 'inline-block',
+      fontSize = '1',
+      bgColor = colors.mono[0],
+      fColor = colors.mono[colors.mono.length - 1],
+      fontWeight = '400',
+      margin = '0',
+      overflow = 'hidden',
+      maxHeight = '40vh',
+      clickable = false,
+      onClick,
+      children
+    },
+    ref
+  ) => {
+    return (
+      <TextItem
+        display={display}
+        fontSize={fontSize}
+        bgColor={bgColor}
+        fColor={fColor}
+        fontWeight={fontWeight}
+        margin={margin}
+        overflow={overflow}
+        maxHeight={maxHeight}
+        clickable={clickable}
+        onClick={onClick}
+      >
+        {children}
+      </TextItem>
+    );
+  }
+);
 
 export default Text;
