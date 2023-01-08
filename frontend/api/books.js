@@ -1,5 +1,6 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
 import { getCategories } from './categories';
+import { allAuthorsQuery } from './authors';
 const STATIC_ARRAY = [];
 
 //exportable quries
@@ -17,6 +18,10 @@ export const aBookQuery = gql`
         id
         firstName
         lastName
+        books {
+          id
+          title
+        }
       }
       description
     }
@@ -34,6 +39,9 @@ export const allBooksQuery = gql`
         id
         firstName
         lastName
+        books {
+          id
+        }
       }
       category {
         id
@@ -104,7 +112,11 @@ export const useAddBook = (
 ) => {
   const [add, { loading, error, data }] = useMutation(addBookMutation, {
     variables: { title, authorId, coverImage, categoryId, description },
-    refetchQueries: ['getBooks', { query: getCategories }]
+    refetchQueries: [
+      'getBooks',
+      { query: getCategories },
+      { query: allAuthorsQuery }
+    ]
   });
   return {
     addBook: (title, authorId, coverImage, categoryId, description) =>
@@ -136,6 +148,7 @@ export const updateBookMutation = gql`
     $authorId: String!
     $categoryId: String!
     $description: String
+    $coverImage: String
   ) {
     updateBook(
       id: $id
@@ -143,6 +156,7 @@ export const updateBookMutation = gql`
       authorId: $authorId
       categoryId: $categoryId
       description: $description
+      coverImage: $coverImage
     ) {
       id
       title
@@ -161,15 +175,24 @@ export const updateBookMutation = gql`
   }
 `;
 
-export const useUpdateBook = (id, title, authorId, categoryId, description) => {
+export const useUpdateBook = (
+  id,
+  title,
+  authorId,
+  categoryId,
+  description,
+  coverImage
+) => {
   const [update, { loading, error, data }] = useMutation(updateBookMutation, {
-    variables: { id, title, authorId, categoryId, description },
+    variables: { id, title, authorId, categoryId, description, coverImage },
     refetchQueries: ['getBooks', { query: getCategories }]
   });
 
   return {
-    updateBook: (id, title, authorId, categoryId, description) =>
-      update({ variables: { id, title, authorId, categoryId, description } }),
+    updateBook: (id, title, authorId, categoryId, description, coverImage) =>
+      update({
+        variables: { id, title, authorId, categoryId, description, coverImage }
+      }),
     updateBookLoading: loading,
     updateBookError: error,
     updateBookData: data

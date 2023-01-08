@@ -11,6 +11,13 @@ export const getCategory = gql`
       name
       books {
         id
+        title
+        author {
+          id
+          firstName
+          lastName
+        }
+        description
       }
     }
   }
@@ -24,6 +31,13 @@ export const getCategories = gql`
       name
       books {
         id
+        title
+        author {
+          id
+          firstName
+          lastName
+        }
+        description
       }
     }
   }

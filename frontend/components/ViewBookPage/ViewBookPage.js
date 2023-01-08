@@ -1,20 +1,46 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
+
 import { Text, Section, Flex, Button, Modal, AddBookForm } from '../index';
 import { useGetBook } from '../../api/books';
-import triggerModal from '../../helper/triggerModal';
+
 /**
  * Component which is responsible for the inside of the Modal which shows the Book Info
  * @param bookId - Id of the book we want to view
  * @param onClick - function to be called when close is clicked
  * @returns {JSX.Element}
  */
-const ViewBookPage = ({ bookId, onClick, returnPath, showEditForm }) => {
+const ViewBookPage = ({ bookId, onClick, returnPath }) => {
+  //showEditForm
   /**
    * Hook for getting info from a book based on a bookId
    */
   const { bookLoading, bookError, book } = useGetBook(bookId);
-  const [showEditBookModal, setShowEditBookModal] = useState(false); //Determines if EditBook Modal is shown or not
+  const [showEditBookModal, setShowEditBookModal] = React.useState(false); //Determines if EditBook Modal is shown or not
+
+  const displayDescription = () => {
+    return (
+      <div
+        style={{
+          width: 'auto',
+          marginLeft: `${book.coverImage != ' ' ? `20px` : `0px`}`
+        }}
+      >
+        <Text margin={'0px  0px 2px 0px'} fontSize={'1.5'} fontWeight={'200'}>
+          <h4 style={{ margin: 'unset' }}>Description</h4>
+        </Text>
+        <Text
+          display={'block'}
+          margin={'20px  0 10px 0'}
+          fontSize={'1'}
+          fontWeight={'400'}
+          maxHeight={'25vh'}
+          overflow={'auto'}
+        >
+          {book.description}
+        </Text>
+      </div>
+    );
+  };
 
   const createAuthorLine = () => {
     return (
@@ -62,47 +88,53 @@ const ViewBookPage = ({ bookId, onClick, returnPath, showEditForm }) => {
             <span>{book.title}</span>
             <Button
               margin={'0px 0px 0px 20px'}
-              onClick={() =>
-                triggerModal(setShowEditBookModal, showEditBookModal)
-              }
+              onClick={() => {
+                setShowEditBookModal(true);
+              }}
+              label={'Edit'}
             >
               Edit
             </Button>
           </Text>
           <div style={{ width: '100%' }}>
             <Text fontSize={'1'} fontWeight={'200'}>
-              {createAuthorLine()}
+              <b>Author</b> : {createAuthorLine()}
             </Text>
           </div>
-          <Text margin={'10px  0 10px 0'} fontSize={'1.5'} fontWeight={'200'}>
-            <h4>Description</h4>
-          </Text>
-          <Text
-            margin={'20px  0 10px 0'}
-            fontSize={'1'}
-            fontWeight={'400'}
-            maxHeight={'25vh'}
-            overflow={'auto'}
-          >
-            {book.description}
-          </Text>
+          {book.coverImage != ' ' ? (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 10fr' }}>
+              <img
+                src={book.coverImage}
+                style={{
+                  width: '100px',
+                  height: '150px',
+                  margin: 'auto'
+                }}
+              />
+              {displayDescription()}
+            </div>
+          ) : (
+            <>{displayDescription()}</>
+          )}
         </Flex>
       ) : (
         <Text>{'Loading...'}</Text>
       )}
-      {showEditBookModal && (
+      {showEditBookModal ? (
         <Modal
-          onClick={() => triggerModal(setShowEditBookModal, showEditBookModal)}
+          onClick={() => {
+            setShowEditBookModal(false);
+          }}
           title={'Edit Book'}
         >
           <AddBookForm
             bookId={bookId}
-            onClick={() =>
-              triggerModal(setShowEditBookModal, showEditBookModal)
-            }
+            onClick={() => {
+              setShowEditBookModal(false);
+            }}
           />
         </Modal>
-      )}
+      ) : null}
     </Section>
   );
 };

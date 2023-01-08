@@ -40,6 +40,7 @@ const SingleLineInput = ({
   register,
   width = '100%',
   bgColor = 'white',
+  inputState = () => {},
   value = ''
 }) => {
   const [input, setInput] = useState('');
@@ -77,7 +78,10 @@ const SingleLineInput = ({
           maxLength: 110
         })}
         value={input}
-        onChange={e => setInput(e.target.value)}
+        onChange={e => {
+          setInput(e.target.value);
+          inputState(e.target.value);
+        }}
       />
       {errors?.[name] && errors?.[name].type === 'required' && (
         <StyledAlert role={'alert'}>Input is Required</StyledAlert>

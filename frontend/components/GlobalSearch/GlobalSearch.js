@@ -5,6 +5,7 @@ const GlobalSearch = ({ filter, setFilter }) => {
     <div>
       Search:{' '}
       <input
+        type={'text'}
         style={{ border: 'thin grey solid', borderRadius: '6px' }}
         value={filter || ''}
         onChange={e => setFilter(e.target.value)}

@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import colors from '../../theme/colors';
 import { useGlobalFilter, usePagination, useTable } from 'react-table';
-import { Button, SingleLineInput, MultiLineInput, Flex } from '../index';
+import { useSortBy } from 'react-table';
+import { Button } from '../index';
 import GlobalSearch from '../GlobalSearch/GlobalSearch';
+import { ContinuousDeployment } from '@carbon/icons-react';
 
 const Styles = styled.div`
-  padding: 4rem;
+  padding: 2rem;
 
   table {
     table-layout: fixed;
@@ -26,10 +27,16 @@ const Styles = styled.div`
     th,
     td {
       padding: 12px 15px;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     tbody tr {
       border-bottom: thin solid #dddddd;
+      max-height: 220px;
+    }
+    tbody td {
+      overflow: hidden;
     }
     tbody tr:nth-of-type(even) {
       background-color: #f3f3f3;
@@ -39,8 +46,17 @@ const Styles = styled.div`
 
 const Table = ({ columns, data }) => {
   const tableInstance = useTable(
-    { columns, data },
+    {
+      columns,
+      data,
+      disableSortRemove: true,
+      defaultCanSort: true,
+      initialState: {
+        sortBy: [{ id: columns[0].accessor, desc: true }]
+      }
+    },
     useGlobalFilter,
+    useSortBy,
     usePagination
   );
   const {
@@ -55,8 +71,11 @@ const Table = ({ columns, data }) => {
     prepareRow,
     pageOptions,
     state,
-    setGlobalFilter
+    setGlobalFilter,
+    rows,
+    preGlobalFilteredRows
   } = tableInstance;
+
   const { globalFilter, pageIndex } = state;
 
   return (
@@ -76,11 +95,22 @@ const Table = ({ columns, data }) => {
                     // Loop over the headers in each row
                     headerGroup.headers.map(column => (
                       // Apply the header cell props
-                      <th {...column.getHeaderProps()}>
+                      <th
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
+                        )}
+                      >
                         {
                           // Render the header
                           column.render('Header')
                         }
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? ' 🔽'
+                              : ' 🔼'
+                            : ''}
+                        </span>
                       </th>
                     ))
                   }
