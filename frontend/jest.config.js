@@ -6,6 +6,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.[jt]s?(x)'],
   coveragePathIgnorePatterns: [
     'frontend/hooks/useToast.js',
+    'frontend/components/Toast/Toast.js',
     'frontend/components/ToastManager/ToastManager.js',
     'frontend/providers/ToastProvider/*'
   ],

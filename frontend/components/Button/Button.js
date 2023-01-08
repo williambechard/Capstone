@@ -29,6 +29,12 @@ const StyledButton = styled.button`
     background-color: ${colors.mono[2]};
     cursor: pointer;
   }
+  &:disabled {
+    background-color: ${colors.mono[1]};
+    cursor: default;
+    color: ${colors.mono[2]};
+    border-color: ${colors.mono[2]};
+  }
 `;
 
 const Button = ({
@@ -41,6 +47,7 @@ const Button = ({
   margin = 'unset',
   btnType = 'button',
   children,
+  disabled,
   onClick
 }) => {
   return (
@@ -54,6 +61,7 @@ const Button = ({
       bgColor={bgColor}
       fontSize={fontSize}
       fontWeight={fontWeight}
+      disabled={disabled}
     >
       {children}
     </StyledButton>
