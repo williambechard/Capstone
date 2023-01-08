@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { SingleLineInput, MultiLineInput } from '../../../components';
-import { colors } from '../../../components';
+import { SingleLineInput } from '../../../components';
 
 describe('Single Line Text Input Component Tests', () => {
   it('should render a default Single Line Input component', () => {
@@ -31,15 +30,15 @@ describe('Single Line Text Input Component Tests', () => {
     );
     const textInputComponent = screen.getByRole('textbox');
     expect(textInputComponent).toBeInTheDocument();
-    expect(textInputComponent).toHaveStyle('width:50%');
+    expect(textInputComponent).toHaveStyle('width:100%');
   });
   it('should have a label that correctly points to its input', () => {
     render(<SingleLineInput register={jest.fn()} errors={jest.fn()} />);
     const div = screen.getByText('Label');
     expect(div).toBeInTheDocument();
-    expect(div.closest('label').getAttribute('for')).toBe('Label');
+    expect(div.closest('label').getAttribute('for')).toBe('test');
     const InputNode = screen.getByRole('textbox');
-    expect(InputNode.getAttribute('name')).toBe('Label');
+    expect(InputNode.getAttribute('name')).toBe('test');
   });
   it('should render with a specific style on required type error', () => {
     const mockError = () => {
@@ -53,6 +52,7 @@ describe('Single Line Text Input Component Tests', () => {
     render(
       <SingleLineInput
         labelText={'TestInput'}
+        name={'TestInput'}
         register={jest.fn()}
         errors={mockError()}
       />
@@ -77,6 +77,7 @@ describe('Single Line Text Input Component Tests', () => {
     render(
       <SingleLineInput
         labelText={'TestInput'}
+        name={'TestInput'}
         register={jest.fn()}
         errors={mockError()}
       />

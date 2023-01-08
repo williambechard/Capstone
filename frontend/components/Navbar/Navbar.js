@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Text, Flex, colors } from '../';
+import React, { useEffect } from 'react';
+import { Text, Flex } from '../';
 import Link from 'next/link';
 
 const Navbar = () => {
-  const [currentPage, setCurrentPage] = useState('/');
+  const [currentPage, setCurrentPage] = React.useState('/');
 
   useEffect(() => {
     setCurrentPage(window.location.pathname);

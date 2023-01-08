@@ -7,7 +7,7 @@ import React from 'react';
 
 describe('Text Component Tests', () => {
   it('should render a default Text component', () => {
-    render(<Text />);
+    render(<Text>test</Text>);
     const textComponent = screen.getByText('test');
     expect(textComponent).toBeInTheDocument();
     expect(textComponent).toHaveTextContent('test');
@@ -40,7 +40,7 @@ describe('Text Component Tests', () => {
         overflow={'auto'}
         maxHeight={'20vh'}
       >
-        <span>test Content</span>
+        test Content
       </Text>
     );
     const textComponent = screen.getByText('test Content');
@@ -67,7 +67,7 @@ describe('Text Component Tests', () => {
         maxHeight={'20vh'}
         onClick={mockCallBack}
       >
-        <span>test Content</span>
+        test Content
       </Text>
     );
 

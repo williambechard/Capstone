@@ -4,9 +4,11 @@ import {
   useAddAuthor,
   useGetAuthor,
   useGetAuthors,
+  useUpdateAuthor,
   allAuthorsQuery,
   anAuthorQuery,
-  addAuthorMutation
+  addAuthorMutation,
+  updateAuthorMutation
 } from '../../../api/authors';
 import { MockedProvider } from '@apollo/client/testing';
 
@@ -123,6 +125,59 @@ describe('api Authors test', () => {
     await act(async () => {
       const authorInfo = await result.current.addAuthor('Jim', 'Bean');
       expect(authorInfo.data.addAuthor.id).toBe('1');
+    });
+  });
+
+  it('should update an author', async () => {
+    const updateAuthorMock = {
+      request: {
+        query: updateAuthorMutation,
+        variables: {
+          id: '1',
+          firstName: 'Jim',
+          lastName: 'Bean',
+          books: ['2']
+        }
+      },
+      result: {
+        data: {
+          updateAuthor: {
+            id: '1',
+            firstName: 'Jim',
+            lastName: 'Bean',
+            books: [
+              {
+                id: '1',
+                firstName: 'Jim',
+                lastName: 'Bean',
+                books: [
+                  {
+                    id: '1'
+                  },
+                  { id: '2' }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    const wrapper = ({ children }) => (
+      <MockedProvider mocks={[updateAuthorMock]} addTypename={false}>
+        {children}
+      </MockedProvider>
+    );
+
+    const { result } = renderHook(() => useUpdateAuthor(), { wrapper });
+
+    await waitFor(() => expect(result.current.updateAuthorLoading).toBeFalsy());
+
+    await act(async () => {
+      const authorInfo = await result.current.updateAuthor('1', 'Jim', 'Bean', [
+        '2'
+      ]);
+      expect(authorInfo.data.updateAuthor.firstName).toBe('Jim');
     });
   });
 });

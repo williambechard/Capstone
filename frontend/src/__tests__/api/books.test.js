@@ -9,7 +9,9 @@ import {
   useGetBooks,
   useGetBook,
   useAddBook,
-  useRemoveBook
+  useRemoveBook,
+  useUpdateBook,
+  updateBookMutation
 } from '../../../api/books';
 
 describe('books api test', () => {
@@ -30,7 +32,9 @@ describe('books api test', () => {
                 id: '1',
                 firstName: 'J.K.',
                 lastName: 'Rowling'
-              }
+              },
+              category: '1',
+              description: 'hello world'
             },
             {
               id: '2',
@@ -40,7 +44,9 @@ describe('books api test', () => {
                 id: '1',
                 firstName: 'J.K.',
                 lastName: 'Rowling'
-              }
+              },
+              category: '1',
+              description: 'hello world'
             },
             {
               id: '3',
@@ -50,7 +56,9 @@ describe('books api test', () => {
                 id: '1',
                 firstName: 'J.K.',
                 lastName: 'Rowling'
-              }
+              },
+              category: '1',
+              description: 'hello world'
             },
             {
               id: '4',
@@ -60,7 +68,9 @@ describe('books api test', () => {
                 id: '2',
                 firstName: 'Dan',
                 lastName: 'Gookin'
-              }
+              },
+              category: '1',
+              description: 'hello world'
             }
           ]
         }
@@ -88,6 +98,7 @@ describe('books api test', () => {
             title: 'Harry Potter and the Chamber of Secrets',
             description: 'hello world',
             coverImage: '',
+            category: '1',
             author: {
               id: '1',
               firstName: 'J.K.',
@@ -116,7 +127,7 @@ describe('books api test', () => {
             title: 'book 1',
             authorId: '1',
             coverImage: '',
-            categoryIds: '',
+            categoryId: '',
             description: ''
           }
         },
@@ -127,6 +138,7 @@ describe('books api test', () => {
               title: 'book 1',
               description: '',
               coverImage: '',
+              category: '',
               author: {
                 id: '1',
                 firstName: 'w',
@@ -149,7 +161,9 @@ describe('books api test', () => {
                   id: '1',
                   firstName: 'J.K.',
                   lastName: 'Rowling'
-                }
+                },
+                category: '1',
+                description: 'hello world'
               },
               {
                 id: '2',
@@ -159,7 +173,9 @@ describe('books api test', () => {
                   id: '1',
                   firstName: 'J.K.',
                   lastName: 'Rowling'
-                }
+                },
+                category: '1',
+                description: 'hello world'
               },
               {
                 id: '3',
@@ -169,7 +185,9 @@ describe('books api test', () => {
                   id: '1',
                   firstName: 'J.K.',
                   lastName: 'Rowling'
-                }
+                },
+                category: '1',
+                description: 'hello world'
               },
               {
                 id: '4',
@@ -179,7 +197,9 @@ describe('books api test', () => {
                   id: '2',
                   firstName: 'Dan',
                   lastName: 'Gookin'
-                }
+                },
+                category: '1',
+                description: 'hello world'
               }
             ]
           }
@@ -224,6 +244,38 @@ describe('books api test', () => {
       result.current.removeBook();
       waitFor(() => expect(result.current.removeBookLoading).toBeFalsy());
       expect(result.current.removeBookError).toBeFalsy();
+    });
+  });
+  it('should update a book', async () => {
+    const updateBookMock = [
+      {
+        request: {
+          query: updateBookMutation,
+          variables: {
+            id: '1',
+            title: 'updatedTitle',
+            authorId: '1',
+            categoryId: '1',
+            description: ''
+          }
+        },
+        result: {
+          data: { updateBook: jest.fn() }
+        }
+      }
+    ];
+    const wrapper = ({ children }) => (
+      <MockedProvider mocks={updateBookMock} addTypename={false}>
+        {children}
+      </MockedProvider>
+    );
+
+    const { result } = renderHook(() => useUpdateBook(), { wrapper });
+    await waitFor(() => expect(result.current.updateBookLoading).toBe(false));
+    await act(() => {
+      result.current.updateBook('1', 'updatedTitle', '1', '1', '');
+      waitFor(() => expect(result.current.updateBookLoading).toBeFalsy());
+      expect(result.current.updateBookError).toBeFalsy();
     });
   });
 });

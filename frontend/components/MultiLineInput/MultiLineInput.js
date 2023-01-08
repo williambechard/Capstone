@@ -15,6 +15,9 @@ const StyledInput = styled.textarea`
   border: 1px solid ${colors.mono[4]};
   padding-left: 0.5rem;
   box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 85%;
 `;
 
 const StyledAlert = styled.div`

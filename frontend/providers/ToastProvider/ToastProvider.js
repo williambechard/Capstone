@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import ToastManager from '../../components/ToastManager';
-import ToastContext from '../contexts/ToastContext';
+import ToastContext from '../ToastContext/ToastContext';
 
 const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
